@@ -16,11 +16,13 @@ class ModbusClientImpl extends ModbusClient {
 
   Completer<Uint8List>? _completer;
   FunctionCallback? _nextDataCallBack;
+  late Duration _requestTimeout;
 
-  ModbusClientImpl(this._connector, int unitId) {
+  ModbusClientImpl(this._connector, int unitId, { Duration? requestTimeout = const Duration(milliseconds: 6000)}) {
     _connector.onResponse = _onConnectorData;
     _connector.onError = _onConnectorError;
     _connector.onClose = _onConnectorClose;
+    _requestTimeout = requestTimeout!;
     _connector.setUnitId(unitId);
   }
 
@@ -118,7 +120,8 @@ class ModbusClientImpl extends ModbusClient {
       } else {
         _completer!.complete(responseData);
       }
-    });
+    })
+    .timeout(_requestTimeout);
   }
 
   @override
