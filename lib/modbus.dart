@@ -93,7 +93,7 @@ abstract class ModbusClient {
 
 ModbusClient createClient(TcpConnector connector, {int unitId = 1}) =>
     ModbusClientImpl(connector, unitId);
-
+/// [requestTimeout] contiene un valor por default de 5000 milisegundossssssssssss
 ModbusClient createTcpClient(address,
         {int port = 502,
         ModbusMode mode = ModbusMode.rtu,
