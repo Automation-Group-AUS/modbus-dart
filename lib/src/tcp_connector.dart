@@ -75,6 +75,10 @@ class TcpConnector extends ModbusConnector {
 
     if (_mode == ModbusMode.ascii) tcpData = AsciiConverter.toAscii(tcpData);
 
-    _socket!.add(tcpData);
+    if(_socket != null){
+      _socket!.add(tcpData);
+      return;
+    }
+    throw Exception("The underlying socket was null at the time of sending a write command, please recreate the socket");
   }
 }
